@@ -36,6 +36,9 @@ public class TimelineActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
 
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_timeline);
 
         swipeContainer = findViewById(R.id.swipeContainer);

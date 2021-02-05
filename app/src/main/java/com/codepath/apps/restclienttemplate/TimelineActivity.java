@@ -1,13 +1,16 @@
 package com.codepath.apps.restclienttemplate;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -15,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.codepath.apps.restclienttemplate.databinding.ActivityTimelineBinding;
 import com.codepath.apps.restclienttemplate.databinding.ActivityTimelineBinding;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.apps.restclienttemplate.models.TweetDao;
@@ -85,6 +89,24 @@ public class TimelineActivity extends AppCompatActivity {
             }
         };
         binding.rvTweets.addOnScrollListener(scrollListener);
+        binding.rvTweets.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                if (dy < 0) {
+                    binding.fabCompose.show();
+
+                } else if (dy > 0) {
+                    binding.fabCompose.hide();
+                }
+            }
+        });
+        binding.fabCompose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), ComposeActivity.class);
+                startActivityForResult(intent, REQUEST_CODE);
+            }
+        });
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
@@ -96,22 +118,6 @@ public class TimelineActivity extends AppCompatActivity {
             }
         });
         populateHomeTimeline();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.compose) {
-            Intent intent = new Intent(this, ComposeActivity.class);
-            startActivityForResult(intent, REQUEST_CODE);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -154,7 +160,6 @@ public class TimelineActivity extends AppCompatActivity {
                     final List<Tweet> tweetsFromNetwork = Tweet.fromJsonArray(json.jsonArray);
                     adapter.clear();
                     adapter.addAll(Tweet.fromJsonArray(json.jsonArray));
-                    swipeContainer.setRefreshing(false);
                     AsyncTask.execute(new Runnable() {
                         @Override
                         public void run() {
@@ -164,6 +169,7 @@ public class TimelineActivity extends AppCompatActivity {
                             tweetDao.insertModel(tweetsFromNetwork.toArray(new Tweet[0]));
                         }
                     });
+                    swipeContainer.setRefreshing(false);
                 } catch (JSONException e) {
                     Log.e(TAG, "Json exception", e);
                 }

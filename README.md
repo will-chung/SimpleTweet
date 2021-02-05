@@ -22,7 +22,7 @@ The following **optional** features are implemented:
 - [ ] User can tap a tweet to display a "detailed" view of that tweet
 - [ ] User can see embedded image media within the tweet detail view
 - [ ] User can watch embedded video within the tweet
-- [ ] User can open the twitter app offline and see last loaded tweets
+- [x] User can open the twitter app offline and see last loaded tweets
 - [ ] On the Twitter timeline, leverage the CoordinatorLayout to apply scrolling behavior that hides / shows the toolbar.
 
 The following **additional** features are implemented:
@@ -34,6 +34,8 @@ The following **additional** features are implemented:
 Here's a walkthrough of implemented user stories:
 
 <img src='https://github.com/will-chung/SimpleTweet/blob/master/walkthrough.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+
+<img src='https://github.com/will-chung/SimpleTweet/blob/master/walkthrough2.gif' title='Video Walkthrough 2' width='' alt='Video Walkthrough 2' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 

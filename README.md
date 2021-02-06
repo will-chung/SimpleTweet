@@ -61,11 +61,13 @@ Here's a walkthrough of implemented user stories:
 
 <img src='https://github.com/will-chung/SimpleTweet/blob/master/walkthrough2.gif' title='Video Walkthrough 2' width='' alt='Video Walkthrough 2' />
 
+<img src='https://github.com/will-chung/SimpleTweet/blob/master/walkthrough3.gif' title='Video Walkthrough 2' width='' alt='Video Walkthrough 3' />
+
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 
-Describe any challenges encountered while building the app.
+App design was both challenging and fun!
 
 ## Open-source libraries used
 

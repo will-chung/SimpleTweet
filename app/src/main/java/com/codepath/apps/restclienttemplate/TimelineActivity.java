@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -52,9 +53,6 @@ public class TimelineActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
 
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayUseLogoEnabled(true);
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_timeline);
 
         swipeContainer = findViewById(R.id.swipeContainer);
@@ -80,6 +78,10 @@ public class TimelineActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         binding.rvTweets.setLayoutManager(layoutManager);
         binding.rvTweets.setAdapter(adapter);
+
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(binding.rvTweets.getContext(),
+                layoutManager.getOrientation());
+        binding.rvTweets.addItemDecoration(dividerItemDecoration);
 
         scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
@@ -113,6 +115,10 @@ public class TimelineActivity extends AppCompatActivity {
                 Log.i(TAG, "Showing data from database");
                 List<TweetWithUser> tweetWithUsers = tweetDao.recentItems();
                 List<Tweet> tweetsFromDB = TweetWithUser.getTweetList(tweetWithUsers);
+                for(Tweet tweet : tweetsFromDB) {
+                    if(tweet.mediaUrl == null || !tweet.mediaUrl.contains("https"))
+                        tweet.mediaUrl = "";
+                }
                 adapter.clear();
                 adapter.addAll(tweetsFromDB);
             }
@@ -124,6 +130,7 @@ public class TimelineActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
             Tweet tweet = Parcels.unwrap(data.getParcelableExtra("tweet"));
+            tweet.mediaUrl = "";
             tweets.add(0, tweet);
             adapter.notifyItemInserted(0);
             Log.i(TAG, "returned from ComposeActivity");

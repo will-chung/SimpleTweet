@@ -1,5 +1,8 @@
 package com.codepath.apps.restclienttemplate.models;
 
+import android.util.Log;
+
+import androidx.core.app.RemoteInput;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -33,6 +36,9 @@ public class Tweet {
     @ColumnInfo
     public long userId;
 
+    @ColumnInfo
+    public String mediaUrl;
+
     @Ignore
     public User user;
 
@@ -43,6 +49,11 @@ public class Tweet {
         tweet.body = jsonObject.getString("text");
         tweet.createdAt = TimeFormatter.getTimeDifference(jsonObject.getString("created_at"));
         tweet.id = jsonObject.getLong("id");
+        tweet.mediaUrl = "";
+        if (jsonObject.getJSONObject("entities").has("media")) {
+            tweet.mediaUrl = jsonObject.getJSONObject("entities").getJSONArray("media").getJSONObject(0).getString("media_url_https");
+            Log.i("Tweet", "display_url: " + tweet.mediaUrl);
+        }
         User user = User.fromJson(jsonObject.getJSONObject("user"));
         tweet.user = user;
         tweet.userId = user.id;

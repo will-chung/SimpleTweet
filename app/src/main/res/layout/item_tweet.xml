@@ -65,8 +65,8 @@
             android:layout_above="@+id/tvBody"
             android:layout_marginStart="5dp"
             android:layout_toEndOf="@+id/tvScreenName"
-            android:text="@{tweet.createdAt}"
             android:gravity="right"
+            android:text="@{tweet.createdAt}"
             android:textAlignment="gravity"
             tools:text="10m" />
 
